@@ -9,6 +9,7 @@ from database import *
 from sinhvien import *
 import numpy as np
 import os
+from time import sleep
 
 def getData(window):
     face = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
@@ -82,22 +83,26 @@ def getData(window):
     def update_frame(canvas, photo, label, index, id, cap):
         ret, frame = cap.read()
         frame = cv2.resize(frame, dsize=None, fx=1, fy=1)
-        img = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        img = frame
+        height = img.shape[0]//2
+        width = img.shape[1]//2
+        cv2.rectangle(frame, (width - 150,  height - 150), (width + 150,  height + 150), (0, 225, 0), 2)
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        faces = face.detectMultiScale(frame, 1.3, 5)
-        for x, y, w, h in faces:
-            cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 225, 0), 2)
-            if not os.path.exists('dataSet'):
-                os.makedirs('dataSet')
-            index += 1
-            if index <= int(soanh.get()):
-                Label(labelframe_left_bottom, text="Số ảnh: {0}/{1}".format(str(index), soanh.get())).place(x=10, y=10)
-                cv2.imwrite('dataSet/User.{0}.{1}.jpg'.format(id, index), cv2.resize(img[y:y + h, x:x + w], dsize=(300, 300)))
-            if index == int(soanh.get()) + 1:
-                messagebox.showinfo('Thông báo', 'Đã lấy ảnh xong, bạn có thể tắt camera!')
+        if not os.path.exists('dataSet'):
+            os.makedirs('dataSet')
+        index += 1
+        if index <= int(soanh.get()):
+            Label(labelframe_left_bottom, text="Số ảnh: {0}/{1}".format(str(index), soanh.get())).place(x=10, y=10)
+            cv2.imwrite('dataSet/User.{0}.{1}.jpg'.format(id, index),
+                        cv2.resize(img[height - 150:height + 150, width - 150:width + 150], dsize=(224, 224)))
+            if index%20==0:
+                messagebox.showinfo('Thông báo', 'Đổi tư thế khác!')
+
+        if index == int(soanh.get()) + 1:
+            messagebox.showinfo('Thông báo', 'Đã lấy ảnh xong, bạn có thể tắt camera!')
         photo = PIL.ImageTk.PhotoImage(image=PIL.Image.fromarray(frame))
         canvas.create_image(0, 0, image=photo, anchor=tkinter.NW)
-        label.after(15, lambda: update_frame(canvas, photo, labelframe_left_top, index, id, cap))
+        label.after(10, lambda: update_frame(canvas, photo, labelframe_left_top, index, id, cap))
 
     def laydulieu():
         if maSV.get()=='':

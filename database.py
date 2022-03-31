@@ -97,3 +97,17 @@ def editTeachers(magv, name, diachi, sdt):
     query = "update Teachers set fullname=N'{0}', address=N'{1}', phone='{2}' where magv='{3}'".format(name, diachi, sdt, magv)
     cursor.execute(query)
     conn.commit()
+#Bang subjects
+
+def getSSubjects():
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM subjects')
+    a = []
+    for i in cursor:
+        a.append(list(i))
+    return a
+def insertSubjects(mamh, tenmh, giovao, giora):
+    cursor = conn.cursor()
+    query = "insert into Subjects values('{0}',N'{1}',N'{2}','{3}')".format(mamh, tenmh, giovao, giora)
+    cursor.execute(query)
+    conn.commit()

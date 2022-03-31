@@ -13,7 +13,7 @@ import os
 def listSubjects(tv):
     for item in tv.get_children():
         tv.delete(item)
-    for i in getClass():
+    for i in getSSubjects():
         tv.insert('', END, values=i)
     tv.place(x=320, y=20)
 
@@ -24,15 +24,15 @@ def Monhoc(window):
     labelframe_left.place(x=5, y=5)
     labelframe_right = LabelFrame(labelfrm, width=610, height=750, bg='#CFCFCF')
     labelframe_right.place(x=770, y=5)
-    tieude = Label(labelframe_left, text="ĐIỂM DANH SINH VIÊN", font=('Arial', 18), bg='#CFCFCF')
+    tieude = Label(labelframe_left, text="MÔN HỌC", font=('Arial', 18), bg='#CFCFCF')
     tieude.place(relx=0.5, rely=0.04, anchor='center')
 
-    labelframe_left_top = LabelFrame(labelframe_left, text='Nhận diện', width=730, height=620, bg='#CFCFCF')
+    labelframe_left_top = LabelFrame(labelframe_left, text='Thông tin môn học', width=730, height=620, bg='#CFCFCF')
     labelframe_left_top.place(x=5, y=50)
 
     labelframe_left_bottom = LabelFrame(labelframe_left, text='', width=730, height=60, bg='#CFCFCF')
     labelframe_left_bottom.place(x=5, y=680)
-    labelframe_right_top = LabelFrame(labelframe_right, text='Kết quả điểm danh', width=590, height=400, bg='#CFCFCF')
+    labelframe_right_top = LabelFrame(labelframe_right, text='Đăng ký môn học', width=590, height=400, bg='#CFCFCF')
     labelframe_right_top.place(x=10, y=50)
     labelframe_right_bottom = LabelFrame(labelframe_right, text='Thông tin môn học', width=370, height=285,
                                          bg='#CFCFCF')
@@ -62,8 +62,7 @@ def Monhoc(window):
     tv.column("Giovao", anchor='w', width=100)
     tv.heading('Giora', text='Giờ vào')
     tv.column("Giora", anchor='w', width=100)
-    tv.place(x=320, y=20)
-    #listClass(tv)
+    listSubjects(tv)
     # right-bottom
     lopHoc = ttk.Combobox(labelframe_right_bottom, width=15)
     getComboBox(lopHoc, getClass())
